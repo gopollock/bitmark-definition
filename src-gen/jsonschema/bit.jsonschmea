@@ -1,0 +1,660 @@
+{
+  "definitions": {
+    "bitmark.bit.Image": {
+      "title": "Image",
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string"
+        },
+        "src": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.Audio": {
+      "title": "Audio",
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string"
+        },
+        "src": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.Video": {
+      "title": "Video",
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string"
+        },
+        "src": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.Resource.Type": {
+      "title": "Type",
+      "type": "string",
+      "enum": [
+        "IMAGE",
+        "AUDIO",
+        "VIDEO"
+      ]
+    },
+    "bitmark.bit.Resource": {
+      "title": "Resource",
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/bitmark.bit.Resource.Type"
+        },
+        "image": {
+          "$ref": "#/definitions/bitmark.bit.Image"
+        },
+        "audio": {
+          "$ref": "#/definitions/bitmark.bit.Audio"
+        },
+        "video": {
+          "$ref": "#/definitions/bitmark.bit.Video"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.Meta": {
+      "title": "Meta",
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max_score": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.System": {
+      "title": "System",
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string"
+        },
+        "modificationDate": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "google.protobuf.Any": {
+      "title": "Any",
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.Bit": {
+      "title": "Bit",
+      "type": "object",
+      "properties": {
+        "markup": {
+          "type": "string"
+        },
+        "bit": {
+          "$ref": "#/definitions/google.protobuf.Any"
+        },
+        "meta": {
+          "$ref": "#/definitions/bitmark.bit.Meta"
+        },
+        "system": {
+          "$ref": "#/definitions/bitmark.bit.System"
+        },
+        "private": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.TrueFalse1": {
+      "title": "TrueFalse1",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/definitions/bitmark.bit.Resource"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "is_correct": {
+          "type": "boolean"
+        },
+        "is_example": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.TrueFalse.Statement": {
+      "title": "Statement",
+      "type": "object",
+      "properties": {
+        "statement": {
+          "type": "string"
+        },
+        "is_correct": {
+          "type": "boolean"
+        },
+        "is_example": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.TrueFalse": {
+      "title": "TrueFalse",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/definitions/bitmark.bit.Resource"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "labelTrue": {
+          "type": "string"
+        },
+        "labelFalse": {
+          "type": "string"
+        },
+        "statements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/bitmark.bit.TrueFalse.Statement"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.Choice": {
+      "title": "Choice",
+      "type": "object",
+      "properties": {
+        "choice": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "is_correct": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.MultipleChoice1": {
+      "title": "MultipleChoice1",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/definitions/bitmark.bit.Resource"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/bitmark.bit.Choice"
+          }
+        },
+        "is_example": {
+          "type": "boolean"
+        },
+        "example": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.MultipleChoice.Quiz": {
+      "title": "Quiz",
+      "type": "object",
+      "properties": {
+        "item": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "choice": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/bitmark.bit.Choice"
+          }
+        },
+        "hint": {
+          "type": "string"
+        },
+        "is_example": {
+          "type": "boolean"
+        },
+        "example": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.MultipleChoice": {
+      "title": "MultipleChoice",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/definitions/bitmark.bit.Resource"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "footer": {
+          "type": "string"
+        },
+        "quizzes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/bitmark.bit.MultipleChoice.Quiz"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.Response": {
+      "title": "Response",
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "is_correct": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.MultipleResponse1": {
+      "title": "MultipleResponse1",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/definitions/bitmark.bit.Resource"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "responses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/bitmark.bit.Response"
+          }
+        },
+        "is_example": {
+          "type": "boolean"
+        },
+        "example": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.MultipleResponse.Quiz": {
+      "title": "Quiz",
+      "type": "object",
+      "properties": {
+        "item": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "responses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/bitmark.bit.Response"
+          }
+        },
+        "is_example": {
+          "type": "boolean"
+        },
+        "example": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.MultipleResponse": {
+      "title": "MultipleResponse",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/definitions/bitmark.bit.Resource"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "quizzes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/bitmark.bit.MultipleResponse.Quiz"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.HighlightText.Highlight": {
+      "title": "Highlight",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "is_highlighted": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.HighlightText.BodyPart": {
+      "title": "BodyPart",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "texts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/bitmark.bit.HighlightText.Highlight"
+          }
+        },
+        "item": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "is_example": {
+          "type": "string"
+        },
+        "example": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.HighlightText": {
+      "title": "HighlightText",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/definitions/bitmark.bit.Resource"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "body": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/bitmark.bit.HighlightText.BodyPart"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.Sequence": {
+      "title": "Sequence",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/definitions/bitmark.bit.Resource"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "bitmark.bit.Essay": {
+      "title": "Essay",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/definitions/bitmark.bit.Resource"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "partial_answer": {
+          "type": "string"
+        },
+        "sample_solution": {
+          "type": "string"
+        },
+        "is_example": {
+          "type": "string"
+        },
+        "example": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

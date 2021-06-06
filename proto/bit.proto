@@ -1,0 +1,259 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+
+package bitmark.bit;
+
+option java_multiple_files = true;
+
+///// RESOURCES
+
+message Image {
+  string format = 1;
+  string src = 2;
+  // TODO add more fields https://docs.bitmark.cloud/bitmark_resources/#image
+}
+
+message Audio {
+  string format = 1;
+  string src = 2;
+  // TODO add more fields https://docs.bitmark.cloud/bitmark_resources/#image
+}
+
+message Video {
+  string format = 1;
+  string src = 2;
+  // TODO add more fields https://docs.bitmark.cloud/bitmark_resources/#image
+}
+
+message Resource {
+  enum Type {
+    IMAGE = 0;
+    AUDIO = 1;
+    VIDEO = 2;
+    // TODO other resource types
+  }
+  Type type = 1;
+  oneof source {
+    Image image = 2;
+    Audio audio = 3;
+    Video video = 4;
+  }
+}
+
+//// BIT
+
+message Meta {
+  repeated string tags = 1;
+  int64 max_score = 2;
+  // TODO add more fields https://docs.bitmark.cloud/bit/#meta
+}
+
+message System {
+  string creationDate = 1;
+  string modificationDate = 2;
+  string version = 3;
+  // TODO add more fields https://docs.bitmark.cloud/bit/#system
+}
+
+message Bit {
+  string markup = 1;
+  google.protobuf.Any bit = 2; // *)
+  Meta meta = 3;
+  System system = 4;
+  map<string,string> private = 5;
+}
+
+/*
+
+*) Fields common to all 'bits' according to https://docs.bitmark.cloud/bit_markup/
+- type
+- format
+- resource
+- lead
+- item
+- instruction
+- hint
+- sample_solution
+- example
+
+TODO Why are these fields not part of the Bit object itself?
+*/
+
+///////// QUIZZES
+
+/*
+Open questions:
+- body field has mixed string/object type. This is hard to make typesafe :( Suggesting to change this
+*/
+
+message TrueFalse1 {
+  string type = 1;
+  string format = 2;
+  Resource resource = 3;
+  string lead = 4;
+  string item = 5;
+  string instruction = 6;
+  string hint = 7;
+  string body = 8; // TODO Do all quiz hava 'body' or not?
+  string statement = 9;
+  bool is_correct = 10;
+  bool is_example = 11;
+}
+
+message TrueFalse {
+  string type = 1;
+  string format = 2;
+  Resource resource = 3;
+  string lead = 4;
+  string item = 5;
+  string instruction = 6;
+  string hint = 7;
+  string body = 8;
+  string labelTrue = 9;
+  string labelFalse = 10;
+  message Statement {
+    string statement = 1;
+    bool is_correct = 2;
+    bool is_example = 3;
+  }
+  repeated Statement statements = 11;
+}
+
+message Choice {
+  string choice = 1;
+  string item = 2;
+  bool is_correct = 3;
+  // TODO We need formatting and image (for MultipleChoice1 only) in the choices
+}
+
+message MultipleChoice1 {
+  string type = 1;
+  string format = 2;
+  Resource resource = 3;
+  string lead = 4;
+  string item = 5;
+  string instruction = 6;
+  string hint = 7;
+  string body = 8;
+  repeated Choice choices = 9;
+  bool is_example = 10;
+  string example = 11; // Why do we have both is_example and example?
+}
+
+message MultipleChoice {
+  string type = 1;
+  string format = 2;
+  Resource resource = 3;
+  string lead = 4;
+  string item = 5;
+  string instruction = 6;
+  string hint = 7;
+  string body = 8;
+  string footer = 9;
+  message Quiz {
+    string item = 1;
+    string instruction = 2;
+    repeated Choice choice = 3;
+    string hint = 4;
+    bool is_example = 5;
+    string example = 6;
+  }
+  repeated Quiz quizzes = 10;
+}
+
+message Response {
+  string response = 1;
+  string item = 2;
+  string hint = 3;
+  bool is_correct = 4;
+}
+
+message MultipleResponse1 {
+  string type = 1;
+  string format = 2;
+  Resource resource = 3;
+  string lead = 4;
+  string item = 5;
+  string instruction = 6;
+  string hint = 7;
+  string body = 8;
+  repeated Response responses = 9; // There was no 'hint' field for MultipleResponse1 respnse, added it
+  bool is_example = 10;
+  string example = 11;
+}
+
+message MultipleResponse {
+  string type = 1;
+  string format = 2;
+  Resource resource = 3;
+  string lead = 4;
+  string item = 5;
+  string instruction = 6;
+  string hint = 7;
+  string body = 8;
+  message Quiz {
+    string item = 1;
+    string instruction = 2;
+    repeated Response responses = 3;
+    bool is_example = 4;
+    string example = 5;
+  }
+  repeated Quiz quizzes = 9;
+}
+
+message HighlightText {
+  string type = 1;
+  string format = 2;
+  Resource resource = 3;
+  string lead = 4;
+  string item = 5;
+  string instruction = 6;
+  string hint = 7;
+  message Highlight {
+    string text = 1;
+    string instruction = 2;
+    string hint = 3;
+    bool is_highlighted = 4; // Better is_correct?
+  }
+  message BodyPart {
+    string type = 1; // "highlight" or "text"
+    string body = 2; // Body is text to always be inserted before the highlights. Better name for it?
+    repeated Highlight texts = 3;
+    string item = 4;
+    string hint = 5;
+    string instruction = 6;
+    string is_example = 7;
+    string example = 8;
+  }
+  repeated BodyPart body = 9; // Maybe we should use a different name than 'body' here? For the other quiz body is used
+                              // as a general text that is shown in addition to the quiz (?).
+}
+
+message Sequence {
+  string type = 1;
+  string format = 2;
+  Resource resource = 3;
+  string lead = 4;
+  string item = 5;
+  string instruction = 6;
+  string hint = 7;
+  string body = 8;
+  repeated string elements = 9; // TODO we need formatting in elements
+}
+
+message Essay {
+  string type = 1;
+  string format = 2;
+  Resource resource = 3;
+  string lead = 4;
+  string item = 5;
+  string instruction = 6;
+  string hint = 7;
+  string body = 8;
+  string partial_answer = 9;
+  string sample_solution = 10;
+  string is_example = 11;
+  string example = 12;
+}
