@@ -1,0 +1,207 @@
+syntax = "proto3";
+
+package bitmark.bit3;
+
+option java_multiple_files = true;
+
+///// RESOURCES
+
+message Image {
+  string format = 1;
+  string src = 2;
+  // TODO add more fields https://docs.bitmark.cloud/bitmark_resources/#image
+}
+
+message Audio {
+  string format = 1;
+  string src = 2;
+  // TODO add more fields https://docs.bitmark.cloud/bitmark_resources/#image
+}
+
+message Video {
+  string format = 1;
+  string src = 2;
+  // TODO add more fields https://docs.bitmark.cloud/bitmark_resources/#image
+}
+
+message Resource {
+  enum Type {
+    Image = 0;
+    Audio = 1;
+    Video = 2;
+    // TODO other resource types
+  }
+  Type type = 1;
+  oneof source {
+    Image image = 2;
+    Audio audio = 3;
+    Video video = 4;
+  }
+}
+
+//// BIT
+
+message Meta {
+  repeated string tags = 1;
+  int64 max_score = 2;
+  // TODO add more fields https://docs.bitmark.cloud/bit/#meta
+}
+
+message System {
+  string creation_date = 1;
+  string modification_date = 2;
+  string version = 3;
+  // TODO add more fields https://docs.bitmark.cloud/bit/#system
+}
+
+message Bit {
+  enum Type {
+    TrueFalse1 = 0;
+    MultipleChoice1 = 1;
+    MultipleChoice = 2;
+    MultipleResponse1 = 3;
+    MultipleResponse = 4;
+    HighlightText = 5;
+    Sequence = 6;
+    Essay = 7;
+    // TODO other resource types
+  }
+
+  string markup = 1;
+  Type type = 2;
+  string format = 3;
+  Resource resource = 4;
+  string lead = 5;
+  string item = 6;
+  string instruction = 7;
+  string hint = 8;
+  string sample_solution = 9; // TODO Should it be an object with format field?
+  Meta meta = 10;
+  System system = 11;
+
+  oneof bit {
+    // TODO Add other bit types.
+    TrueFalse1 true_false1 = 50;
+    MultipleChoice1 multiple_choice1 = 51;
+    MultipleChoice multiple_choice = 52;
+    MultipleResponse1 multiple_response1 = 53;
+    MultipleResponse multiple_response = 54;
+    HighlightText highlight_text = 55;
+    Sequence sequence = 56;
+    Essay essay = 57;
+  }
+
+  map<string,string> private = 12;
+}
+
+///////// QUIZZES
+
+/*
+Open questions:
+- body field has mixed string/object type. This is hard/impossible to make typesafe :( Suggesting to change this
+*/
+
+message TrueFalse1 {
+  string body = 1; // TODO Do all quiz hava 'body' or not?
+  string statement = 2;
+  bool is_correct = 3;
+  bool is_example = 4;
+}
+
+message TrueFalse {
+  string body = 1;
+  string labelTrue = 2;
+  string labelFalse = 3;
+  message Statement {
+    string statement = 1;
+    bool is_correct = 2;
+    bool is_example = 3;
+  }
+  repeated Statement statements = 4;
+}
+
+message Choice {
+  string choice = 1;
+  string item = 2;
+  bool is_correct = 3;
+  // TODO We need formatting and image (for MultipleChoice1 only) in the choices
+}
+
+message MultipleChoice1 {
+  string body = 1;
+  repeated Choice choices = 2;
+  bool is_example = 3;
+  string example = 4; // Why do we have both is_example and example?
+}
+
+message MultipleChoice {
+  string body = 1;
+  string footer = 2;
+  message Quiz {
+    string item = 1;
+    string instruction = 2;
+    repeated Choice choice = 3;
+    string hint = 4;
+    bool is_example = 5;
+    string example = 6;
+  }
+  repeated Quiz quizzes = 3;
+}
+
+message Response {
+  string response = 1;
+  string item = 2;
+  string hint = 3;
+  bool is_correct = 4;
+}
+
+message MultipleResponse1 {
+  string body = 1;
+  repeated Response responses = 2; // There was no 'hint' field for MultipleResponse1 respnse, added it
+  bool is_example = 3;
+  string example = 4;
+}
+
+message MultipleResponse {
+  string body = 1;
+  message Quiz {
+    string item = 1;
+    string instruction = 2;
+    repeated Response responses = 3;
+    bool is_example = 4;
+    string example = 5;
+  }
+  repeated Quiz quizzes = 2;
+}
+
+message HighlightText {
+  message Highlight {
+    string text = 1;
+    string instruction = 2;
+    string hint = 3;
+    bool is_highlighted = 4; // Better is_correct?
+  }
+  message HighlightGroup {
+    string body = 1; // Body is text to always be inserted before the highlights.
+    repeated Highlight highlights = 2;
+    string item = 3;
+    string hint = 4;
+    string instruction = 5;
+    string is_example = 6;
+    string example = 7;
+  }
+  repeated HighlightGroup highlight_groups = 3;
+}
+
+message Sequence {
+  string body = 1;
+  repeated string elements = 2; // TODO we need formatting in elements
+}
+
+message Essay {
+  string body = 1;
+  string partial_answer = 2;
+  string sample_solution = 3;
+  string is_example = 4;
+  string example = 5;
+}
