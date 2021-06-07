@@ -1,6 +1,7 @@
 {
   "scripts" : {
-    "gen-json-schema": "npx protobuf-jsonschema --proto_path /usr/include proto/bit.proto > src-gen/jsonschema/bit.jsonschmea"
+    "gen-json-schema": "npx protobuf-jsonschema --proto_path /usr/include proto/bit.proto > src-gen/jsonschema/bit.jsonschmea",
+    "gen-json-schema3": "npx protobuf-jsonschema --proto_path /usr/include proto/bit3.proto > src-gen/jsonschema/bit3.jsonschmea"
   },
   "dependencies": {
     "protobuf-jsonschema": "https://github.com/gopollock/protobuf-jsonschema#adc2555d9a8470d00de03411ba29a1642ef097ba"
