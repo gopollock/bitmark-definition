@@ -85,7 +85,7 @@ TODO Why are these fields not part of the Bit object itself?
 
 /*
 Open questions:
-- body field has mixed string/object type. This is hard to make typesafe :( Suggesting to change this
+- body field has mixed string/object type. This is hard/impossible to make typesafe :( Suggesting to change this
 */
 
 message TrueFalse1 {
